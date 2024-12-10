@@ -21,48 +21,40 @@ Ks = Px/(TsN - TzewN);
 
 %parametry dynamiczne
 Cvw = (cpp * rop * Vw);
-Cvs = (cps * ros * Vs) / 100;
+Cvs = (cps * ros * Vs);
 
 %======CZESC 2======
 %warunki poczatkowe
 Tzew0 = TzewN;
-Fp0 = 0; %FpN * 1.0;
+Fp0 = FpN * 1.0;
 Pg0 = PgN * 1.0;
 
 %======CZESC 3 (symulacje)======
-czas = 20000; %czas symulacji
+czas = 200000; %czas symulacji
 %zaklocenia
-czas_skok = 10000;
-dTzew = 1;
+czas_skok = 20000;
+dTzew = 0;
 dFp = 0;
-dPg = 0; 
+dPg = 0.1 * Pg0; 
 
 Twew0 = (Pg0 + Tzew0*(cpp*rop*Fp0 + ((Ks*Kw)/(Kw + Ks)))) / (cpp*rop*Fp0 + ((Kw * Ks)/(Kw + Ks)));
 Ts0 = (Kw*Twew0 + Ks*Tzew0) / (Kw + Ks);
 
+%regulator
+CV0 = Pg0;
+dSP = 1;
+SP0 = Twew0;
+SP = SP0 + dSP;
+
+k = 4 / dPg;
+T = 6.65 * 10000 - czas_skok ;
+T0 = 0.1 * T;
+
+Kp = 0.9 * T / (k*T0);
+Ti = 3.33 * T0;
+
 [t] = sim('lab2Sim', czas);
 
 %wykresy
-figure, plot(t, Twew, 'r'), grid on, hold on, title('Reakcja Twew na skok Tzew');
+figure, plot(t, Twew, 'r'), grid on, hold on, title('Reakcja Twew na skok Pg');
 
-index = find(abs(t - 10310) == min(abs(t - 10310))); 
-m = gradient(Twew, t);
-m_tangent = m(index);
-
-% Równanie stycznej
-x_tangent = t;
-y_tangent = m_tangent * (x_tangent - 10310) + 48.6941;
-
-% Rysowanie stycznej
-plot(x_tangent, y_tangent, 'b--', 'LineWidth', 1.5);
-legend('Twew', 'Styczna');
-
-% Wzmocnienie
-k = 1 / dTzew;
-disp(['Wzmocnienie k: ', num2str(k)]);
-
-T0 = 0.0037 *10000;
-T = 0.2227*10000 - T0 ;
-dCV = dTzew;
-[t] = sim('ob1_FOTD', czas); %odp. modelu
-plot(t, aPV, 'r');
