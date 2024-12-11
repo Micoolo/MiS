@@ -20,8 +20,8 @@ Kw = Px/(TwewN - TsN);
 Ks = Px/(TsN - TzewN);
 
 %parametry dynamiczne
-Cvw = (cpp * rop * Vw);
-Cvs = (cps * ros * Vs);
+Cvw = cpp * rop * Vw;
+Cvs = cps * ros * Vs;
 
 %======CZESC 2======
 %warunki poczatkowe
@@ -30,39 +30,25 @@ Fp0 = FpN * 1.0;
 Pg0 = PgN * 1.0;
 
 %======CZESC 3 (symulacje)======
-czas = 200000; %czas symulacji
+czas = 250000; %czas symulacji
 %zaklocenia
-czas_skok = 20000;
-dTzew = 0;
+czas_skok = 10000;
+dTzew = 1;
 dFp = 0;
-dPg = 0.1 * Pg0; 
+dPg = 0; 
 
 Twew0 = (Pg0 + Tzew0*(cpp*rop*Fp0 + ((Ks*Kw)/(Kw + Ks)))) / (cpp*rop*Fp0 + ((Kw * Ks)/(Kw + Ks)));
 Ts0 = (Kw*Twew0 + Ks*Tzew0) / (Kw + Ks);
 
-[t] = sim('identSim', czas);
+[t] = sim('lab2Sim', czas);
 
 %wykresy
-figure, plot(t, Twew, 'r'), grid on, hold on, title('Reakcja Twew na skok dPg'), ylim([19 25]);
+figure, plot(t, Ts, 'r'), grid on, hold on, title('Reakcja Twew na skok Tzew');
 
-index = find(abs(t - 22480) == min(abs(t - 22480))); 
-m = gradient(Twew, t);
-m_tangent = m(index);
-
-% Równanie stycznej
-x_tangent = t;
-y_tangent = m_tangent * (x_tangent - 22480) + 20.9405;
-
-% Rysowanie stycznej
-plot(x_tangent, y_tangent, 'b--', 'LineWidth', 1.5);
-%legend('Twew', 'Styczna');
-
-% Wzmocnienie
+%Odczytane parametry k, T0, T
 k = 4 / dPg;
-disp(['Wzmocnienie k: ', num2str(k)]);
-
-T = 6.65 * 10000 - czas_skok ;
-T0 = 0.1 * T;
-dCV = dTzew;
-[t] = sim('ident_FOTD', czas); %odp. modelu
-%plot(t, aPV, 'b');
+T0 = 0.1 * 10^4;
+T = (1.5 - 0.5) * 10^4 - T0 ;
+dCV = dPg;
+%[t] = sim('ob1_FOTD', czas); %odp. modelu
+%plot(t, aPV, 'g'),;

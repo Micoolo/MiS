@@ -46,6 +46,7 @@ dSP = 1;
 SP0 = Twew0;
 SP = SP0 + dSP;
 
+
 k = 4 / dPg;
 T = 6.65 * 10000 - czas_skok ;
 T0 = 0.1 * T;
@@ -56,5 +57,6 @@ Ti = 3.33 * T0;
 [t] = sim('lab2Sim', czas);
 
 %wykresy
-figure, plot(t, Twew, 'r'), grid on, hold on, title('Reakcja Twew na skok Pg');
+figure, plot(t, Twew, 'r'), grid on, hold on, title('PV (Twew), dTzew = 1');
+%figure, plot(t, aPg, 'r'), grid on, hold on, title('CV (Pg), dTzew = 1'), ylim([7750 8050]);
 
