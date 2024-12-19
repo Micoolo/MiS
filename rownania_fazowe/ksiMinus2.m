@@ -4,7 +4,7 @@ close all;
 %======CZESC 1======
 %wartosci nominalne
 wn = 5;
-ksi = 0;
+ksi = -2;
 
 
 %======CZESC 2======
@@ -23,15 +23,11 @@ dU = 1;
 % Wykres
 figure;
 plot(t, aX, 'r', 'LineWidth', 2), grid on;
-title('Odpowiedź układu w stanie ustalonym');
-xlabel('Czas [s]');
-ylabel('x(t)');
+title('Reakcja na skok, \xi = -2');
 
 %======CZESC 2======
 %warunki poczatkowe
-U0 = 0;          
-%X0 = 0.5;         
-%Xp0 = -0.2;         
+U0 = 0;       
 
 %======CZESC 3 (symulacje)======
 czas = 10;    
@@ -39,8 +35,8 @@ czas_skok = 1;
 dU = 0;          
 
 % Warunki początkowe
-X0 = [1, -5];   % różne położenia początkowe
-Xp0 = [3, 5]; % różne prędkości początkowe
+X0 = [1, -3];   % różne położenia początkowe
+Xp0 = [5, -6]; % różne prędkości początkowe
 
 figure; hold on; grid on;
 
@@ -55,6 +51,6 @@ for i = 1:length(X0)
 end
 
 % Oznaczenia wykresu
-title('Portret fazowy - węzeł niestabilny (\xi < -1)');
+title('Portret fazowy, \xi = -2');
 xlabel('x');
 ylabel('x''');

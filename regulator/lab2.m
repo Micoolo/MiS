@@ -30,10 +30,10 @@ Fp0 = FpN * 1.0;
 Pg0 = PgN * 1.0;
 
 %======CZESC 3 (symulacje)======
-czas = 200000; %czas symulacji
+czas = 100000; %czas symulacji
 %zaklocenia
 czas_skok = 20000;
-dTzew = 0;
+dTzew = 1;
 dFp = 0;
 dPg = 0.1 * Pg0; 
 
@@ -42,7 +42,7 @@ Ts0 = (Kw*Twew0 + Ks*Tzew0) / (Kw + Ks);
 
 %regulator
 CV0 = Pg0;
-dSP = 1;
+dSP = 0;
 SP0 = Twew0;
 SP = SP0 + dSP;
 
@@ -57,6 +57,6 @@ Ti = 3.33 * T0;
 [t] = sim('lab2Sim', czas);
 
 %wykresy
-figure, plot(t, Twew, 'r'), grid on, hold on, title('PV (Twew), dTzew = 1');
-%figure, plot(t, aPg, 'r'), grid on, hold on, title('CV (Pg), dTzew = 1'), ylim([7750 8050]);
+figure, plot(t, Twew, 'r'), grid on, hold on, title('PV (Twew), dTzew = 1'), ylim([19.99 20.05]);
+figure, plot(t, Pg, 'r'), grid on, hold on, title('CV (Pg), dTzew = 1'), ylim([7750 8050]);
 
